@@ -21,8 +21,8 @@ import javax.swing.JFrame;
 
 public class BreakingBad extends JFrame implements KeyListener, Runnable{
     /* Declaración de Variables */
-    private static final int iWIDTH = 800;  // ancho del JFrame
-    private static final int iHEIGHT = 850; // alto del JFrame
+    private static final int iWIDTH = 900;  // ancho del JFrame
+    private static final int iHEIGHT = 650; // alto del JFrame
     private int iScore;     // puntos del juego
     private boolean bLose;  // boleana de perdida de juego
     private Base basBarra;  // barra del juego
@@ -32,6 +32,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     private int iDireccion; // direccion de la barra (1- izquierda, 2 derecha)
     private boolean bPause; // boleana para pausa
     private boolean bMove;  // boleana de movimiento de la barra
+    private int iNivel; // nivel del juego 
     private LinkedList<Animacion> lklDrogas; //Lista de objetos de la clase Animacion
     private Animacion aniPortada;   // Imagen portada
     private long tiempoActual;
@@ -68,7 +69,10 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         bMove = false;
         
         // inicializa boleana de movimiento en falso
-        bPortada = false;
+        bPortada = true;
+        
+        // se inicializa en nivel 1
+        iNivel = 1;
         
         // se inicializa la bola y sus velocidades
         iBallYSpeed = 8;
@@ -207,6 +211,10 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
             // si choca arriba
             iBallYSpeed *= -1;
         }
+        // si choca con la barra
+        if (basBola.intersecta(basBarra)) {
+            calcBallAngle();
+        }
         
     }
     
@@ -218,31 +226,33 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
      * @param graGrafico es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint(Graphics graGrafico) {
+<<<<<<< HEAD
         if (!bPortada) {
             graGrafico.drawImage(aniPortada.getImagen(), 0, 0, this);
             bPortada = true;
         }
+=======
+>>>>>>> origin/master
         
-        else {
-            // Inicializan el DoubleBuffer
-            if (imaImagenJFrame == null){
-                imaImagenJFrame = createImage (this.getSize().width, 
-                                    this.getSize().height);
-                graGraficaJFrame = imaImagenJFrame.getGraphics ();
-            }
-
-            // Actualiza la imagen de fondo.
-            URL urlImagenFondo = this.getClass().getResource("imagenes/cover.png");
-            Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
-             graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, WIDTH, HEIGHT, this);
-
-            // Actualiza el Foreground.
-            graGraficaJFrame.setColor (getForeground());
-            paint1(graGraficaJFrame);
-
-            // Dibuja la imagen actualizada
-            graGrafico.drawImage (imaImagenJFrame, 0, 0, this);
+        // Inicializan el DoubleBuffer
+        if (imaImagenJFrame == null){
+            imaImagenJFrame = createImage (this.getSize().width, 
+                                this.getSize().height);
+            graGraficaJFrame = imaImagenJFrame.getGraphics ();
         }
+
+        // Actualiza la imagen de fondo.
+        URL urlImagenFondo = this.getClass().getResource("imagenes/nivel1.jpeg");
+        Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
+        graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, iWIDTH, iHEIGHT, this);
+
+        // Actualiza el Foreground.
+        graGraficaJFrame.setColor (getForeground());
+        paint1(graGraficaJFrame);
+
+        // Dibuja la imagen actualizada
+        graGrafico.drawImage (imaImagenJFrame, 0, 0, this);
+        
        
     }
     
@@ -309,6 +319,27 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         }
     }
 
+    /**
+      * Metodo <I>calcBallAngle</I> tomado de 
+      * http://www.flashgametuts.com/tutorials/as3/how-to-create-a-brick-breaker-game-in-as3-part-2/.<P>
+      * En este metodo se calcula el angulo para rebotar la bola de la barra.
+      */   
+    public void calcBallAngle() {
+        // la posición es la bola menos la barra
+        int iBallPosition = basBola.getX() - basBarra.getX();
+        // iHitPercent convierte la posición en un porcnetaje
+        // La izquierda es -.5
+        // La derecha es .5
+        // El centro es 0
+        int iHitPercent = (int) ((iBallPosition / (basBarra.getAncho() 
+                - basBola.getAncho())) - .5);
+        // multiplica el hitpercent por un numero para hacerlo grande
+        // hace que la bola rebote
+        iBallXSpeed = iHitPercent * 10;
+        // hace que la bola rebote para arriba
+        iBallYSpeed *= -1;
+        
+    }
    
     
     /**

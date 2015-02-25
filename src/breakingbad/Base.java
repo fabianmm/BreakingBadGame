@@ -187,6 +187,18 @@ public class Base {
     }
     
     /**
+     * getAnimacion
+     * 
+     * Metodo de acceso que regresa la animacion  del objeto 
+     * 
+     * @return aniAnimacion es la <code>animacion</code> del objeto.
+     * 
+     */
+    public Animacion getAnimacion() {
+            return aniAnimacion;
+    }
+    
+    /**
      * paint
      * 
      * Metodo para pintar el animal

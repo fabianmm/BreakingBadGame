@@ -266,4 +266,18 @@ public class Base {
             return false;
         }
     }
+    
+    /*
+     * intersectaMouse
+     *
+     * Metodo que checa si un animal intersecta a otro
+     *
+     * @param objObjeto es un objeto de la clase <code>Object</code>
+     * @return un boleano para saber si intersecta o no
+     */
+    public boolean intersectaMouse(int iX, int iY) {
+        Rectangle rctEsteObjeto = new Rectangle(this.getX(), this.getY(),
+                    this.getAncho(), this.getAlto());
+        return rctEsteObjeto.contains(iX, iY);
+    }
 }

@@ -21,8 +21,8 @@ import javax.swing.JFrame;
 
 public class BreakingBad extends JFrame implements KeyListener, Runnable{
     /* Declaración de Variables */
-    private static final int iWIDTH = 800;  // ancho del JFrame
-    private static final int iHEIGHT = 850; // alto del JFrame
+    private static final int iWIDTH = 900;  // ancho del JFrame
+    private static final int iHEIGHT = 650; // alto del JFrame
     private int iScore;     // puntos del juego
     private boolean bLose;  // boleana de perdida de juego
     private Base basBarra;  // barra del juego
@@ -32,6 +32,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     private int iDireccion; // direccion de la barra (1- izquierda, 2 derecha)
     private boolean bPause; // boleana para pausa
     private boolean bMove;  // boleana de movimiento de la barra
+    private int iNivel; // nivel del juego 
     private LinkedList<Animacion> lklDrogas; //Lista de objetos de la clase Animacion
     private Animacion aniPortada;   // Imagen portada
     private long tiempoActual;
@@ -69,6 +70,9 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         
         // inicializa boleana de movimiento en falso
         bPortada = true;
+        
+        // se inicializa en nivel 1
+        iNivel = 1;
         
         // se inicializa la bola y sus velocidades
         iBallYSpeed = 8;
@@ -220,30 +224,26 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
      * @param graGrafico es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint(Graphics graGrafico) {
-        if (!bPortada) {
-            graGrafico.drawImage(aniPortada.getImagen(), 0, 0, this);
-        }
         
-        else {
-            // Inicializan el DoubleBuffer
-            if (imaImagenJFrame == null){
-                imaImagenJFrame = createImage (this.getSize().width, 
-                                    this.getSize().height);
-                graGraficaJFrame = imaImagenJFrame.getGraphics ();
-            }
-
-            // Actualiza la imagen de fondo.
-            URL urlImagenFondo = this.getClass().getResource("imagenes/nivel1.png");
-            Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
-            graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, iWIDTH, iHEIGHT, this);
-
-            // Actualiza el Foreground.
-            graGraficaJFrame.setColor (getForeground());
-            paint1(graGraficaJFrame);
-
-            // Dibuja la imagen actualizada
-            graGrafico.drawImage (imaImagenJFrame, 0, 0, this);
+        // Inicializan el DoubleBuffer
+        if (imaImagenJFrame == null){
+            imaImagenJFrame = createImage (this.getSize().width, 
+                                this.getSize().height);
+            graGraficaJFrame = imaImagenJFrame.getGraphics ();
         }
+
+        // Actualiza la imagen de fondo.
+        URL urlImagenFondo = this.getClass().getResource("imagenes/nivel1.jpeg");
+        Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
+        graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, iWIDTH, iHEIGHT, this);
+
+        // Actualiza el Foreground.
+        graGraficaJFrame.setColor (getForeground());
+        paint1(graGraficaJFrame);
+
+        // Dibuja la imagen actualizada
+        graGrafico.drawImage (imaImagenJFrame, 0, 0, this);
+        
        
     }
     

@@ -24,6 +24,7 @@ public class Base {
     private int iAncho; //ancho del objeto
     private int iAlto; //largo del objeto
     private Image imaImagen;	//imagen.
+    private Animacion aniAnimacion; // animacion de la base
 
     /**
      * Base
@@ -64,6 +65,27 @@ public class Base {
         ImageIcon imiImagen = new ImageIcon (imaImagen);
         this.iAncho = imiImagen.getIconWidth();
         this.iAlto = imiImagen.getIconHeight();  
+    }
+    
+        /**
+     * Base
+     * 
+     * Metodo constructor usado para crear el objeto animal
+     * creando el icono a partir de una imagen sin alto ni ancho
+     * 
+     * @param iX es la <code>posicion en x</code> del objeto.
+     * @param iY es la <code>posicion en y</code> del objeto.
+     * @param imaImagen es la <code>imagen</code> del objeto.
+     * 
+     */
+    public Base(int iX, int iY, Image imaImagen, Animacion aniAnimacion) {
+        this.iX = iX;
+        this.iY = iY;
+        this.imaImagen = imaImagen;
+        ImageIcon imiImagen = new ImageIcon (imaImagen);
+        this.iAncho = imiImagen.getIconWidth();
+        this.iAlto = imiImagen.getIconHeight();
+        this.aniAnimacion = aniAnimacion;
     }
 
     

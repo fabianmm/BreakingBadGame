@@ -33,7 +33,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     private boolean bPause; // boleana para pausa
     private boolean bMove;  // boleana de movimiento de la barra
     private int iNivel; // nivel del juego 
-    private LinkedList<Animacion> lklDrogas; //Lista de objetos de la clase Animacion
+    private LinkedList<Base> lklDrogas; //Lista de objetos de la clase Animacion
     private Animacion aniPortada;   // Imagen portada
     private long tiempoActual;
     private long tiempoInicial;
@@ -128,6 +128,56 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         aniPortada.sumaCuadro(portada9, 100);
         aniPortada.sumaCuadro(portada10, 100);
         aniPortada.sumaCuadro(portada11, 100);
+        
+        // se cargan las imagenes de la animacion de los bricks
+        Image imaBrick1 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick1.png");
+        Image imaBrick2 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick2.png");
+        Image imaBrick3 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick3.png");
+        Image imaBrick4 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick4.png");
+        Image imaBrick5 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick5.png");
+        Image imaBrick6 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick6.png");
+        Image imaBrick7 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick7.png");
+        Image imaBrick8 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick8.png");
+        Image imaBrick9 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick9.png");
+        Image imaBrick10 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick10.png");
+        Image imaBrick11 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick11.png");
+        Image imaBrick12 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick12.png");
+        Image imaBrick13 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick13.png");
+        Image imaBrick14 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick14.png");
+        Image imaBrick15 = Toolkit.getDefaultToolkit().getImage("imagenes/foto brick15.png");
+        
+        Animacion aniBrick = new Animacion();
+        aniBrick.sumaCuadro(imaBrick1, 100);
+        aniBrick.sumaCuadro(imaBrick2, 100);
+        aniBrick.sumaCuadro(imaBrick3, 100);
+        aniBrick.sumaCuadro(imaBrick4, 100);
+        aniBrick.sumaCuadro(imaBrick5, 100);
+        aniBrick.sumaCuadro(imaBrick6, 100);
+        aniBrick.sumaCuadro(imaBrick7, 100);
+        aniBrick.sumaCuadro(imaBrick8, 100);
+        aniBrick.sumaCuadro(imaBrick9, 100);
+        aniBrick.sumaCuadro(imaBrick10, 100);
+        aniBrick.sumaCuadro(imaBrick11, 100);
+        aniBrick.sumaCuadro(imaBrick12, 100);
+        aniBrick.sumaCuadro(imaBrick13, 100);
+        aniBrick.sumaCuadro(imaBrick14, 100);
+        aniBrick.sumaCuadro(imaBrick15, 100);
+        
+        // crea los cuadros
+        lklDrogas = new LinkedList();
+        
+        int iPosX = 5;
+        int iPosY = 35;
+        
+        for (int iI = 0; iI < 20; iI++) {
+            Base basDroga = new Base(iPosX, iPosY, imaBrick1, aniBrick);
+            iPosX += 105;
+            if (iI % 7 == 0) {
+                iPosX = 5;
+                iPosY += 55;
+            }
+            lklDrogas.add(basDroga);
+        }
         
         
         // Declaras un hilo

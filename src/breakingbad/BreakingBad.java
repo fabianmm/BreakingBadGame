@@ -173,7 +173,9 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
        	 tiempoActual += tiempoTranscurrido;
 
          //Actualiza la animación en base al tiempo transcurrido
-         aniPortada.actualiza(tiempoTranscurrido);
+         if (!bPortada) {
+            aniPortada.actualiza(tiempoTranscurrido);
+         }
          
          // movimiento de la bola
          basBola.setX(basBola.getX() + iBallXSpeed);
@@ -218,6 +220,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     public void paint(Graphics graGrafico) {
         if (!bPortada) {
             graGrafico.drawImage(aniPortada.getImagen(), 0, 0, this);
+            bPortada = true;
         }
         
         else {

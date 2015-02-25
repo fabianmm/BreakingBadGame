@@ -3,7 +3,7 @@
  *
  * Juego en el que .....
  *
- * @author Mauro Amarante (A00191903) and Fabian Montemayor (A0)
+ * @author Mauro Amarante (A00191903) and Fabian Montemayor (A01280156)
  * @version 1.0
  * @date 2015/2/25
  */
@@ -27,6 +27,8 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     private boolean bLose;  // boleana de perdida de juego
     private Base basBarra;  // barra del juego
     private Base basBola;   // bola del juego
+    private int iBallXSpeed; // velocidad X de la bola
+    private int iBallYSpeed; // velocidad Y de la bola
     private int iDireccion; // direccion de la barra (1- izquierda, 2 derecha)
     private boolean bPause; // boleana para pausa
     private boolean bMove;  // boleana de movimiento de la barra
@@ -67,6 +69,17 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         
         // inicializa boleana de movimiento en falso
         bPortada = false;
+        
+        // se inicializa la bola y sus velocidades
+        iBallYSpeed = 8;
+        iBallXSpeed = 8;
+        URL urlImagenBola = this.getClass().getResource("imagenes/bolaOso.png");
+        basBola = new Base(0, 0, 
+                Toolkit.getDefaultToolkit().getImage(urlImagenBola));
+        
+        // reposicionar la bola en medio
+        basBola.setX(iWIDTH / 2);
+        basBola.setY(iHEIGHT / 2);
         
         //Se cargan las imágenes(cuadros) para la animación de la portada
         Image portada1 = Toolkit.getDefaultToolkit().getImage(this.getClass().
@@ -161,6 +174,11 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
 
          //Actualiza la animación en base al tiempo transcurrido
          aniPortada.actualiza(tiempoTranscurrido);
+         
+         // movimiento de la bola
+         basBola.setX(basBola.getX() + iBallXSpeed);
+         basBola.setY(basBola.getY() + iBallYSpeed);
+         
     }
     
     /**
@@ -170,6 +188,23 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
      * 
      */
     public void checaColision() {
+        // hacer que la bola rebote con las paredes
+        if (basBola.getX() > iWIDTH - basBola.getX()) {
+            // si choca con el lado derecho rebota
+            iBallXSpeed *= -1;
+        }
+        if (basBola.getX() < 0) {
+            // si choca con el lado izquierdo
+            iBallXSpeed *= -1;
+        }
+        if (basBola.getY() > iHEIGHT - basBola.getY()) {
+            // si choca abajo pierde
+            bLose = true;
+        }
+        if (basBola.getY() < 0) {
+            // si choca arriba
+            iBallYSpeed *= -1;
+        }
         
     }
     
@@ -183,7 +218,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     public void paint(Graphics graGrafico) {
         if (!bPortada) {
             graGrafico.drawImage(aniPortada.getImagen(), 0, 0, this);
-         }
+        }
         
         else {
             // Inicializan el DoubleBuffer
@@ -215,8 +250,8 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
       * @param graDibujo es el <code>objeto grafico</code> usado para dibujar.
       */
     public void paint1(Graphics graDibujo) {
-        if (basBarra != null ){
-            
+        if (basBola != null ){
+            basBola.paint(graDibujo, this);
         }
         else {
             //Da un mensaje mientras se carga el dibujo	

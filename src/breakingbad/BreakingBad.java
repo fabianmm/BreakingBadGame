@@ -37,7 +37,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     private Animacion aniPortada;   // Imagen portada
     private long tiempoActual;
     private long tiempoInicial;
-    private boolean bPortada;  // boleana de control para animacion portada
+    private int iPortada;  // contador de portada
     private Image    imaImagenJFrame;   // Imagen a proyectar en JFrame
     private Graphics graGraficaJFrame;  // Objeto grafico de la Imagen
     private int iContadorBarra;
@@ -68,8 +68,8 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         // inicializa boleana de movimiento en falso
         bMove = false;
         
-        // inicializa boleana de movimiento en falso
-        bPortada = true;
+        // inicializa en 200
+        iPortada = 2200;
         
         // se inicializa en nivel 1
         iNivel = 1;
@@ -93,27 +93,19 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         
         //Se cargan las imágenes(cuadros) para la animación de la portada
         Image portada1 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover.png"));
+                            getResource("imagenes/portada.png"));
         Image portada2 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover2.png"));
+                            getResource("imagenes/portada2.png"));
         Image portada3 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover3.png"));
+                            getResource("imagenes/portada3.png"));
         Image portada4 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover4.png"));
+                            getResource("imagenes/portada4.png"));
         Image portada5 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover5.png"));
+                            getResource("imagenes/portada5.png"));
         Image portada6 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover6.png"));
+                            getResource("imagenes/portada6.png"));
         Image portada7 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover7.png"));
-        Image portada8 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover8.png"));
-        Image portada9 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover9.png"));
-        Image portada10 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover10.png"));
-        Image portada11 = Toolkit.getDefaultToolkit().getImage(this.getClass().
-                            getResource("imagenes/cover11.png"));
+                            getResource("imagenes/portada7.png"));
         
         //Se crea la animación de la portada
         aniPortada = new Animacion();
@@ -124,10 +116,6 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         aniPortada.sumaCuadro(portada5, 100);
         aniPortada.sumaCuadro(portada6, 100);
         aniPortada.sumaCuadro(portada7, 100);
-        aniPortada.sumaCuadro(portada8, 100);
-        aniPortada.sumaCuadro(portada9, 100);
-        aniPortada.sumaCuadro(portada10, 100);
-        aniPortada.sumaCuadro(portada11, 100);
         
         
         // Declaras un hilo
@@ -183,9 +171,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
        	 tiempoActual += tiempoTranscurrido;
 
          //Actualiza la animación en base al tiempo transcurrido
-         if (!bPortada) {
-            aniPortada.actualiza(tiempoTranscurrido);
-         }
+         aniPortada.actualiza(tiempoTranscurrido);
          
          // movimiento de la bola
          basBola.setX(basBola.getX() + iBallXSpeed);
@@ -256,8 +242,12 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
      * @param graGrafico es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint(Graphics graGrafico) {
-
+        if (iPortada > 0) {
+            graGrafico.drawImage(aniPortada.getImagen(), 0, 0, this);
+            iPortada--;
+        }
         
+        else {
         // Inicializan el DoubleBuffer
         if (imaImagenJFrame == null){
             imaImagenJFrame = createImage (this.getSize().width, 
@@ -273,10 +263,10 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         // Actualiza el Foreground.
         graGraficaJFrame.setColor (getForeground());
         paint1(graGraficaJFrame);
-
+        
         // Dibuja la imagen actualizada
         graGrafico.drawImage (imaImagenJFrame, 0, 0, this);
-        
+        }
        
     }
     
@@ -287,7 +277,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
       * @param graDibujo es el <code>objeto grafico</code> usado para dibujar.
       */
     public void paint1(Graphics graDibujo) {
-        if (basBola != null ){
+        if (basBola != null && iPortada <= 0){
             basBola.paint(graDibujo, this);
             basBarra.paint(graDibujo, this);
         }

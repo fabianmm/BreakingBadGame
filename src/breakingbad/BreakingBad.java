@@ -68,7 +68,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         bMove = false;
         
         // inicializa boleana de movimiento en falso
-        bPortada = false;
+        bPortada = true;
         
         // se inicializa la bola y sus velocidades
         iBallYSpeed = 8;
@@ -205,6 +205,10 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
             // si choca arriba
             iBallYSpeed *= -1;
         }
+        // si choca con la barra
+        if (basBola.intersecta(basBarra)) {
+            calcBallAngle();
+        }
         
     }
     
@@ -229,9 +233,9 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
             }
 
             // Actualiza la imagen de fondo.
-            URL urlImagenFondo = this.getClass().getResource("imagenes/cover.png");
+            URL urlImagenFondo = this.getClass().getResource("imagenes/Superlab1.png");
             Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
-             graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, WIDTH, HEIGHT, this);
+            graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, iWIDTH, iHEIGHT, this);
 
             // Actualiza el Foreground.
             graGraficaJFrame.setColor (getForeground());
@@ -306,6 +310,27 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         }
     }
 
+    /**
+      * Metodo <I>calcBallAngle</I> tomado de 
+      * http://www.flashgametuts.com/tutorials/as3/how-to-create-a-brick-breaker-game-in-as3-part-2/.<P>
+      * En este metodo se calcula el angulo para rebotar la bola de la barra.
+      */   
+    public void calcBallAngle() {
+        // la posición es la bola menos la barra
+        int iBallPosition = basBola.getX() - basBarra.getX();
+        // iHitPercent convierte la posición en un porcnetaje
+        // La izquierda es -.5
+        // La derecha es .5
+        // El centro es 0
+        int iHitPercent = (int) ((iBallPosition / (basBarra.getAncho() 
+                - basBola.getAncho())) - .5);
+        // multiplica el hitpercent por un numero para hacerlo grande
+        // hace que la bola rebote
+        iBallXSpeed = iHitPercent * 10;
+        // hace que la bola rebote para arriba
+        iBallYSpeed *= -1;
+        
+    }
    
     
     /**

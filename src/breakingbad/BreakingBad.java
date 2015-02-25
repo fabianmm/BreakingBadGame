@@ -40,7 +40,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     private boolean bPortada;  // boleana de control para animacion portada
     private Image    imaImagenJFrame;   // Imagen a proyectar en JFrame
     private Graphics graGraficaJFrame;  // Objeto grafico de la Imagen
-    
+    private int iContadorBarra;
     
     /** 
      * BreakingBad
@@ -75,11 +75,12 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         iNivel = 1;
         
         // se inicializa la bola y sus velocidades
-        iBallYSpeed = 8;
-        iBallXSpeed = 8;
+        iBallYSpeed = 5;
+        iBallXSpeed = 5;
         URL urlImagenBola = this.getClass().getResource("imagenes/bolaOso.png");
         basBola = new Base(0, 0, 
                 Toolkit.getDefaultToolkit().getImage(urlImagenBola));
+        iContadorBarra = 0;
         
         // reposicionar la bola en medio
         basBola.setX(iWIDTH / 2);
@@ -87,7 +88,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         
         // se inicializa la barra
         URL urlImagenBarra = this.getClass().getResource("imagenes/barra.png");
-        basBarra = new Base(iWIDTH / 2, 620, 
+        basBarra = new Base(iWIDTH / 2, 600, 
                 Toolkit.getDefaultToolkit().getImage(urlImagenBarra));
         
         //Se cargan las imágenes(cuadros) para la animación de la portada
@@ -192,13 +193,18 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
          
          // movimiento de la barra
          if (bMove) {
-             if (iDireccion == 1) {
-                basBarra.setX(basBarra.getX() - 10);
+             if (iContadorBarra < 20) {
+                if (iDireccion == 1) {
+                    basBarra.setX(basBarra.getX() - 1);
+                }  
+                else if (iDireccion == 2) {
+                    basBarra.setX(basBarra.getX() + 1);
+                }
+                iContadorBarra++;
              }
-             else if (iDireccion == 2) {
-                basBarra.setX(basBarra.getX() + 10);
+             else {
+                bMove = false;
              }
-             bMove = false;
          }
          
     }
@@ -304,12 +310,14 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
             iDireccion = 1;
             // prende boleana
             bMove = true;
+            iContadorBarra = 0;
         }
         else if (kveEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
             // direccion es 2
             iDireccion = 2;
             // prende la boleana
             bMove = true;
+            iContadorBarra = 0;
         }
     }
 

@@ -1,36 +1,52 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * TareaBreakingBad
+ *
+ * Juego en el que .....
+ *
+ * @author Mauro Amarante (A00191903) and Fabian Montemayor (A0)
+ * @version 1.0
+ * @date 2015/2/25
  */
+
 package breakingbad;
 
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URL;
+import java.util.LinkedList;
 import javax.swing.JFrame;
 
-/**
- *
- * @author Fabian Montemayor A01280156
- */
 public class BreakingBad extends JFrame implements KeyListener, Runnable{
     /* Declaración de Variables */
     private static final int iWIDTH = 800;  // ancho del JFrame
-    private static final int iHEIGHT = 500; // alto del JFrame
+    private static final int iHEIGHT = 850; // alto del JFrame
     private int iScore;     // puntos del juego
-    private boolean iLose;  // boleana de perdida de juego
+    private boolean bLose;  // boleana de perdida de juego
     private Base basBarra;  // barra del juego
     private Base basBola;   // bola del juego
     private int iDireccion; // direccion de la barra (1- izquierda, 2 derecha)
     private boolean bPause; // boleana para pausa
     private boolean bMove;  // boleana de movimiento de la barra
+    private LinkedList<Animacion> lklDrogas; //Lista de objetos de la clase Animacion
+    private Animacion aniPortada;   // Imagen portada
+    private long tiempoActual;
+    private long tiempoInicial;
+    private boolean bPortada;  // boleana de control para animacion portada
+    private Image    imaImagenJFrame;   // Imagen a proyectar en JFrame
+    private Graphics graGraficaJFrame;  // Objeto grafico de la Imagen
     
     
-    /**
-     * Método constructor de la clase BreakingBad.
+    /** 
+     * BreakingBad
+     * 
+     * Constructor de la clase <code>BreakingBad</code>.<P>
      * Define la apariencia y funcionalidad del JFrame.
-     * Crea e inicializa las variables.
+     * Crea e inicializa las variables de la clase 
+     * <code>BreakingBad</code>
+     * 
      */
     
     public BreakingBad() {
@@ -38,7 +54,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         iScore = 0;
         
         // inicializa la boleana en falso
-        iLose = false;
+        bLose = false;
         
         // inicializa la direccion en 0
         iDireccion = 0;
@@ -48,6 +64,48 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         
         // inicializa boleana de movimiento en falso
         bMove = false;
+        
+        // inicializa boleana de movimiento en falso
+        bPortada = false;
+        
+        //Se cargan las imágenes(cuadros) para la animación de la portada
+        Image portada1 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover.png"));
+        Image portada2 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover2.png"));
+        Image portada3 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover3.png"));
+        Image portada4 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover4.png"));
+        Image portada5 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover5.png"));
+        Image portada6 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover6.png"));
+        Image portada7 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover7.png"));
+        Image portada8 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover8.png"));
+        Image portada9 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover9.png"));
+        Image portada10 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover10.png"));
+        Image portada11 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/cover11.png"));
+        
+        //Se crea la animación de la portada
+        aniPortada = new Animacion();
+	aniPortada.sumaCuadro(portada1, 2000);
+        aniPortada.sumaCuadro(portada2, 100);
+        aniPortada.sumaCuadro(portada3, 100);
+        aniPortada.sumaCuadro(portada4, 100);
+        aniPortada.sumaCuadro(portada5, 100);
+        aniPortada.sumaCuadro(portada6, 100);
+        aniPortada.sumaCuadro(portada7, 100);
+        aniPortada.sumaCuadro(portada8, 100);
+        aniPortada.sumaCuadro(portada9, 100);
+        aniPortada.sumaCuadro(portada10, 100);
+        aniPortada.sumaCuadro(portada11, 100);
+        
         
         // Declaras un hilo
         Thread th = new Thread (this);
@@ -94,7 +152,15 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
      * 
      */
     public void actualiza() {
-    
+    //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
+         long tiempoTranscurrido =
+             System.currentTimeMillis() - tiempoActual;
+            
+         //Guarda el tiempo actual
+       	 tiempoActual += tiempoTranscurrido;
+
+         //Actualiza la animación en base al tiempo transcurrido
+         aniPortada.actualiza(tiempoTranscurrido);
     }
     
     /**
@@ -114,8 +180,32 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
      * ademas que cuando la imagen es cargada te despliega una advertencia.
      * @param graGrafico es el <code>objeto grafico</code> usado para dibujar.
      */
-    public void paint(Graphics graDibujo) {
+    public void paint(Graphics graGrafico) {
+        if (!bPortada) {
+            graGrafico.drawImage(aniPortada.getImagen(), 0, 0, this);
+         }
         
+        else {
+            // Inicializan el DoubleBuffer
+            if (imaImagenJFrame == null){
+                imaImagenJFrame = createImage (this.getSize().width, 
+                                    this.getSize().height);
+                graGraficaJFrame = imaImagenJFrame.getGraphics ();
+            }
+
+            // Actualiza la imagen de fondo.
+            URL urlImagenFondo = this.getClass().getResource("imagenes/cover.png");
+            Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
+             graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, WIDTH, HEIGHT, this);
+
+            // Actualiza el Foreground.
+            graGraficaJFrame.setColor (getForeground());
+            paint1(graGraficaJFrame);
+
+            // Dibuja la imagen actualizada
+            graGrafico.drawImage (imaImagenJFrame, 0, 0, this);
+        }
+       
     }
     
     /**
@@ -162,10 +252,6 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
             // prende la boleana
             bMove = true;
         }
-        else if (kveEvent.getKeyCode() == KeyEvent.VK_P) {
-            // cambia la boleana de pausa
-            bPause = !bPause;
-        }
     }
 
     /**
@@ -174,12 +260,23 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
       * @param kveEvent es el <code>evento</code> generado al liberar las teclas.
       */    
     public void keyReleased(KeyEvent kveEvent) {
-        // No se utiliza
+        if (kveEvent.getKeyCode() == KeyEvent.VK_P) {
+            // cambia la boleana de pausa
+            if (!bPause) {
+                bPause = true;
+            }
+            else {
+                bPause = false;
+            }
+        }
     }
 
    
     
     /**
+     * main
+     * Metodo inicial de todo el problema
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args) {

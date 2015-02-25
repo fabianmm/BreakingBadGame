@@ -84,11 +84,11 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         
         // reposicionar la bola en medio
         basBola.setX(iWIDTH / 2);
-        basBola.setY(iHEIGHT / 2);
+        basBola.setY(580);
         
         // se inicializa la barra
         URL urlImagenBarra = this.getClass().getResource("imagenes/barra.png");
-        basBarra = new Base(iWIDTH / 2, 600, 
+        basBarra = new Base(iWIDTH / 2 - 75, 600, 
                 Toolkit.getDefaultToolkit().getImage(urlImagenBarra));
         
         //Se cargan las imágenes(cuadros) para la animación de la portada
@@ -195,10 +195,10 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
          if (bMove) {
              if (iContadorBarra < 20) {
                 if (iDireccion == 1) {
-                    basBarra.setX(basBarra.getX() - 1);
+                    basBarra.setX(basBarra.getX() - 3);
                 }  
                 else if (iDireccion == 2) {
-                    basBarra.setX(basBarra.getX() + 1);
+                    basBarra.setX(basBarra.getX() + 3);
                 }
                 iContadorBarra++;
              }
@@ -217,7 +217,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
      */
     public void checaColision() {
         // hacer que la bola rebote con las paredes
-        if (basBola.getX() > iWIDTH - basBola.getX()) {
+        if (basBola.getX() > iWIDTH - basBola.getAncho()) {
             // si choca con el lado derecho rebota
             iBallXSpeed *= -1;
         }
@@ -225,17 +225,25 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
             // si choca con el lado izquierdo
             iBallXSpeed *= -1;
         }
-        if (basBola.getY() > iHEIGHT - basBola.getY()) {
+        if (basBola.getY() > iHEIGHT - basBola.getAlto()) {
             // si choca abajo pierde
             bLose = true;
         }
-        if (basBola.getY() < 0) {
+        if (basBola.getY() < 20) {
             // si choca arriba
             iBallYSpeed *= -1;
         }
         // si choca con la barra
         if (basBola.intersecta(basBarra)) {
             calcBallAngle();
+        }
+        
+        // que la barra no se salga
+        if (basBarra.getX() < 0) {
+            basBarra.setX(0);
+        }
+        else if (basBarra.getX() > iWIDTH - basBarra.getAncho()) {
+            basBarra.setX(iWIDTH - basBarra.getAncho());
         }
         
     }
@@ -350,11 +358,11 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         // La izquierda es -.5
         // La derecha es .5
         // El centro es 0
-        int iHitPercent = (int) ((iBallPosition / (basBarra.getAncho() 
-                - basBola.getAncho())) - .5);
+        double iHitPercent = ((double)iBallPosition / (basBarra.getAncho() 
+                - basBola.getAncho())) - .5;
         // multiplica el hitpercent por un numero para hacerlo grande
         // hace que la bola rebote
-        iBallXSpeed = iHitPercent * 10;
+        iBallXSpeed = (int) (iHitPercent * 10);
         // hace que la bola rebote para arriba
         iBallYSpeed *= -1;
         

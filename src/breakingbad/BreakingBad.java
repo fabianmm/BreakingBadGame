@@ -85,6 +85,11 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
         basBola.setX(iWIDTH / 2);
         basBola.setY(iHEIGHT / 2);
         
+        // se inicializa la barra
+        URL urlImagenBarra = this.getClass().getResource("imagenes/barra.png");
+        basBarra = new Base(iWIDTH / 2, 620, 
+                Toolkit.getDefaultToolkit().getImage(urlImagenBarra));
+        
         //Se cargan las imágenes(cuadros) para la animación de la portada
         Image portada1 = Toolkit.getDefaultToolkit().getImage(this.getClass().
                             getResource("imagenes/cover.png"));
@@ -185,6 +190,17 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
          basBola.setX(basBola.getX() + iBallXSpeed);
          basBola.setY(basBola.getY() + iBallYSpeed);
          
+         // movimiento de la barra
+         if (bMove) {
+             if (iDireccion == 1) {
+                basBarra.setX(basBarra.getX() - 10);
+             }
+             else if (iDireccion == 2) {
+                basBarra.setX(basBarra.getX() + 10);
+             }
+             bMove = false;
+         }
+         
     }
     
     /**
@@ -226,13 +242,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
      * @param graGrafico es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint(Graphics graGrafico) {
-<<<<<<< HEAD
-        if (!bPortada) {
-            graGrafico.drawImage(aniPortada.getImagen(), 0, 0, this);
-            bPortada = true;
-        }
-=======
->>>>>>> origin/master
+
         
         // Inicializan el DoubleBuffer
         if (imaImagenJFrame == null){
@@ -265,6 +275,7 @@ public class BreakingBad extends JFrame implements KeyListener, Runnable{
     public void paint1(Graphics graDibujo) {
         if (basBola != null ){
             basBola.paint(graDibujo, this);
+            basBarra.paint(graDibujo, this);
         }
         else {
             //Da un mensaje mientras se carga el dibujo	

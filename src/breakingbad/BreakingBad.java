@@ -357,7 +357,10 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
        	 lTiempoActual += lTiempoTranscurrido;
 
          //Actualiza la animación en base al tiempo transcurrido
-         aniPortada.actualiza(lTiempoTranscurrido);
+         if (iPortada > 0) {
+             aniPortada.actualiza(lTiempoTranscurrido);
+         }
+         
          
          if (bPlay) {
             // movimiento de la bola
@@ -383,7 +386,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             // animacion de los bricks
             for (Base basBrick : lklDrogas) {
                 if (basBrick.isAnimar()) {
-                    if (iContadorBloque >= 37) {
+                    if (iContadorBloque >= 30) {
                         iContadorBloque = 0;
                         basBrick.setX(basBrick.getX() * -1);
                         basBrick.setY(basBrick.getY() * -1);

@@ -446,6 +446,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             iPortada--;
         } 
         
+        //si no se ha presionado el boton de play
         else if (!bPlay) {
             URL urlImagenMenu = this.getClass().
                                     getResource("imagenes/menu.png");
@@ -455,10 +456,30 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         }
         
         else {
-        // Actualiza la imagen de fondo.
-        URL urlImagenFondo = this.getClass().getResource("imagenes/nivel1.jpeg");
-        Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
-        graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, iWIDTH, iHEIGHT, this);
+            // Actualiza la imagen de fondo dependiendo del nivel
+            URL urlImagenFondo = this.getClass().
+                                            getResource("imagenes/nivel1.jpeg");
+            switch (iNivel) {
+                case 1: { //1 nivel
+                   urlImagenFondo = this.getClass().
+                                            getResource("imagenes/nivel1.jpeg");
+                    break;    
+                }
+                case 2: { //2 nivel
+                    urlImagenFondo = this.getClass().
+                                            getResource("imagenes/nivel2.jpeg");
+                    break;    
+                }
+                case 3: { //3 nivel
+                    urlImagenFondo = this.getClass().
+                                            getResource("imagenes/nivel3.jpeg");
+                    break;    
+                }
+            }
+            Image imaImagenFondo = Toolkit.getDefaultToolkit().
+                                        getImage(urlImagenFondo);
+            graGraficaJFrame.drawImage(imaImagenFondo, 0, 0, 
+                                                        iWIDTH, iHEIGHT, this);
         }
         // Actualiza el Foreground.
         graGraficaJFrame.setColor (getForeground());

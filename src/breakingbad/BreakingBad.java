@@ -79,7 +79,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         bMove = false;
         
         // inicializa en 450
-        iPortada = 450;
+        iPortada = 460;
         
         // el juego no inicia hasta presionar el boton del menu
         bPlay = false;
@@ -443,7 +443,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         
         // checa los bricks
         for (Base basBrick : lklDrogas) {
-            if (basBrick.intersecta(basBola)) {
+            if (basBrick.intersecta(basBola) && !basBrick.isAnimar()) {
                 // lo desaparece
                 basBrick.setAnimar(true);
                 

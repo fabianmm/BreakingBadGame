@@ -430,7 +430,8 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         }
         // si choca con la barra
         if (basBola.intersecta(basBarra)) {
-            calcBallAngle();
+            iBallYSpeed *= -1;
+            iBallXSpeed = calcBallAngle(basBarra);
         }
         
         // que la barra no se salga
@@ -447,15 +448,15 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                 // lo desaparece
                 basBrick.setAnimar(true);
                 
-                //basBrick.setX(basBrick.getX() * -1);
-                //basBrick.setY(basBrick.getY() * -1);
                 // rebota verticalmente
                 iBallYSpeed *= -1;
+                iBallXSpeed = calcBallAngle(basBrick);
                 
                 if (basBola.getY() > basBrick.getY() && 
                         basBola.getY() < basBrick.getY() + basBrick.getAlto()) {
                     iBallXSpeed *= -1;
                 }
+                
             }
         }
         
@@ -622,21 +623,22 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
       * Metodo <I>calcBallAngle</I> tomado de 
       * http://www.flashgametuts.com/tutorials/as3/how-to-create-a-brick-breaker-game-in-as3-part-2/.<P>
       * En este metodo se calcula el angulo para rebotar la bola de la barra.
+      * @param Base basObjeto es el objeto de referencia para el angulo
+      * @return iHitPercent * 10 es el angulo al que rebota
       */   
-    public void calcBallAngle() {
+    public int calcBallAngle(Base basObjeto) {
         // la posición es la bola menos la barra
-        int iBallPosition = basBola.getX() - basBarra.getX();
+        int iBallPosition = basBola.getX() - basObjeto.getX();
         // iHitPercent convierte la posición en un porcnetaje
         // La izquierda es -.5
         // La derecha es .5
         // El centro es 0
-        double iHitPercent = ((double)iBallPosition / (basBarra.getAncho() 
+        double iHitPercent = ((double)iBallPosition / (basObjeto.getAncho() 
                 - basBola.getAncho())) - .5;
         // multiplica el hitpercent por un numero para hacerlo grande
         // hace que la bola rebote
-        iBallXSpeed = (int) (iHitPercent * 10);
-        // hace que la bola rebote para arriba
-        iBallYSpeed *= -1;
+        return (int) (iHitPercent * 10);
+        
         
     }
    

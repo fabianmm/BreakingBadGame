@@ -348,7 +348,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         
         
         // Define los sonidos
-        sndSonidoPortada = new SoundClip("");
+        sndSonidoPortada = new SoundClip("sonidoportada.wav");
         sndSonidoPortada.setLooping(true);
         sndSonidoJuego = new SoundClip("");
         sndSonidoJuego.setLooping(true);
@@ -409,11 +409,12 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             
          //Guarda el tiempo actual
        	 lTiempoActual += lTiempoTranscurrido;
-
+         
          //Actualiza la animación en base al tiempo transcurrido
          if (iPortada > 0) {
-             aniPortada.actualiza(lTiempoTranscurrido);
              sndSonidoPortada.play();
+             aniPortada.actualiza(lTiempoTranscurrido);
+             
          }
          
          // si ya empezó el juego
@@ -737,7 +738,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             //dibujar puntos
             graDibujo.setColor(Color.white);
             String sPuntosDisplay = "Puntos: " + Integer.toString(iScore);
-            graDibujo.drawString(sPuntosDisplay, 0, iHEIGHT/2);
+            graDibujo.drawString(sPuntosDisplay, 0, 0);
         }
     }
     
@@ -783,10 +784,9 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             // cambia la boleana de pausa
             bPause = !bPause;
         }
-        if (iVidas <= 0) {
-            if (kveEvent.getKeyCode() == KeyEvent.VK_ENTER) {
-                bRestart = true;
-            }
+        else if (kveEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+            bRestart = true;
+            iVidas = 3;
         }
     }
 

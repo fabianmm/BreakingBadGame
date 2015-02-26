@@ -379,7 +379,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
            se checa si hubo colisiones para desaparecer jugadores o corregir
            movimientos y se vuelve a pintar todo
         */ 
-        while (iVidas > 0) {
+        while (true) {
             if (!bPause) {
                 actualiza();
                 checaColision();             
@@ -433,7 +433,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                 iNivel = 1;
                 iCantidadBloques = 0;
                 iScore = 0;
-                iVidas = 0;
+                iVidas = 3;
                 // dibuja todos los bloques otra vez en sus posiciones originales             
                 int iPosX = 5;
                 int iPosY = 35;
@@ -737,7 +737,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             //dibujar puntos
             graDibujo.setColor(Color.white);
             String sPuntosDisplay = "Puntos: " + Integer.toString(iScore);
-            graDibujo.drawString(sPuntosDisplay, 0, 0);
+            graDibujo.drawString(sPuntosDisplay, 0, iHEIGHT/2);
         }
     }
     
@@ -783,8 +783,10 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             // cambia la boleana de pausa
             bPause = !bPause;
         }
-        else if (kveEvent.getKeyCode() == KeyEvent.VK_ENTER) {
-            bRestart = true;
+        if (iVidas <= 0) {
+            if (kveEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+                bRestart = true;
+            }
         }
     }
 

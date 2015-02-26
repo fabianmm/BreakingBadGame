@@ -485,6 +485,24 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         else if (!bPlay) {
             URL urlImagenMenu = this.getClass().
                                     getResource("imagenes/menu.png");
+            switch (iNivel) {
+                case 1: { //menu
+                   urlImagenMenu = this.getClass().
+                                            getResource("imagenes/menu.png");
+                    break;    
+                }
+                case 2: { //highscores
+                    urlImagenMenu = this.getClass().
+                                            getResource("imagenes/nivel2.jpeg");
+                    break;    
+                }
+                case 3: { //instrucciones
+                    urlImagenMenu = this.getClass().
+                                            getResource("imagenes/nivel3.jpeg");
+                    break;    
+                }
+            }
+            
             Image imaImagenMenu = Toolkit.getDefaultToolkit()
                                         .getImage(urlImagenMenu);
             graGraficaJFrame.drawImage(imaImagenMenu, 0, 0, this);

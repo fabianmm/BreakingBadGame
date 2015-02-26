@@ -36,6 +36,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     private Base basBotonPlay;  //boton para inciar el juego
     private Base basBotonHigh;  //boton para highscores
     private Base basBotonInst;  //boton para ver las instrucciones
+    private Base basBotonMenu;  //boton para ver las instrucciones
     private int iBallXSpeed; // velocidad X de la bola
     private int iBallYSpeed; // velocidad Y de la bola
     private int iDireccion; // direccion de la barra (1- izquierda, 2 derecha)
@@ -43,6 +44,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     private boolean bMove;  // boleana de movimiento de la barra
     private boolean bPlay;  //booleana para iniciar el juego
     private int iNivel; // nivel del juego 
+    private int iMenu;  //menu que debe desplegarse en el juego
     private LinkedList<Base> lklDrogas; //Lista de objetos de la clase Animacion
     private Animacion aniPortada;   // Imagen portada
     private int iPortada;  // contador de portada
@@ -101,6 +103,9 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         
         // se inicializa en nivel 1
         iNivel = 1;
+        
+        //se inicializa en el menu principal
+        iMenu = 1;
         
         // se inicializa la bola y sus velocidades
         iBallYSpeed = 5;
@@ -331,6 +336,14 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         basBotonInst.setX(iPosX - 250);
         basBotonInst.setY(iPosY + 20);
         
+        //Definir imagenen para boton menu
+	URL urlImagenBotonMenu = this.getClass()
+                                        .getResource("imagenes/botonMenu.png");
+        
+        //se crea el objeto para boton menu
+	basBotonMenu = new Base(0, 0,
+                	Toolkit.getDefaultToolkit().getImage(urlImagenBotonMenu));
+        
         // Declaras un hilo
         Thread th = new Thread (this);
         // Empieza el hilo
@@ -492,10 +505,6 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                 }
             }
          }
-         
-         
-         
-         
     }
     
     /**
@@ -594,7 +603,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         else if (!bPlay) {
             URL urlImagenMenu = this.getClass().
                                     getResource("imagenes/menu.png");
-            switch (iNivel) {
+            switch (iMenu) {
                 case 1: { //menu
                    urlImagenMenu = this.getClass().
                                             getResource("imagenes/menu.png");
@@ -607,7 +616,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                 }
                 case 3: { //instrucciones
                     urlImagenMenu = this.getClass().
-                                            getResource("imagenes/nivel3.jpeg");
+                                      getResource("imagenes/instrucciones.png");
                     break;    
                 }
             }
@@ -659,29 +668,54 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
       */
     public void paint1(Graphics graDibujo) {
         if (!bPlay && iPortada <= 0) {
-            // dibuja los botones
-            basBotonPlay.paint(graDibujo, this);
-            basBotonHigh.paint(graDibujo, this);
-            basBotonInst.paint(graDibujo, this);
+            if (iMenu == 1) {
+                basBotonPlay.paint(graDibujo, this);
+                basBotonHigh.paint(graDibujo, this);
+                basBotonInst.paint(graDibujo, this);
+            }
+            else if (iMenu == 2) {
+                basBotonMenu.paint(graDibujo, this);
+                basBotonPlay.paint(graDibujo, this);
+            }
+            else {
+                basBotonMenu.paint(graDibujo, this);
+                basBotonPlay.paint(graDibujo, this);
+            }
         }
         
-        else if (basBarra != null && lklDrogas != null && 
-                                            basBola != null && bPlay) {
-            // dibula los objetos
-            basBola.paint(graDibujo, this);
-            basBarra.paint(graDibujo, this);
-            for (Base basBrick : lklDrogas) {
-                basBrick.paint(graDibujo, this);
+        if (iVidas > 0 && bPlay) {
+            if (basBarra != null && lklDrogas != null && 
+                                                basBola != null && bPlay){
+                // dibula los objetos
+                basBola.paint(graDibujo, this);
+                basBarra.paint(graDibujo, this);
+                for (Base basBrick : lklDrogas) {
+                    basBrick.paint(graDibujo, this);
+                }
+
+                // dibuja vidas y score
+                graDibujo.setColor(Color.white);
+                graDibujo.drawString("Score: " + iScore, 800, 640);
+                graDibujo.drawString("Vidas: " + iVidas, 700, 640);
             }
-            
-            // dibuja vidas y score
-            graDibujo.setColor(Color.white);
-            graDibujo.drawString("Score: " + iScore, 800, 640);
-            graDibujo.drawString("Vidas: " + iVidas, 700, 640);
+        
+            else {
+                //Da un mensaje mientras se carga el dibujo	
+                graDibujo.drawString("No se cargo la imagen..", 20, 20);
+            }
         }
-        else {
-            //Da un mensaje mientras se carga el dibujo	
-            graDibujo.drawString("No se cargo la imagen..", 20, 20);
+        
+        if (iVidas <= 0) {
+            //definir imagen de game over
+            URL urlImagenGameOver = this.getClass().getResource("gameOver.png");
+            Image imaImagenGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                            getResource("imagenes/gameOver.png"));
+            //Dibujar imagenen
+            graDibujo.drawImage (imaImagenGameOver, 0, 0 ,this);
+            //dibujar puntos
+            graDibujo.setColor(Color.white);
+            String sPuntosDisplay = "Puntos: " + Integer.toString(iScore);
+            graDibujo.drawString(sPuntosDisplay, 0, 0);
         }
     }
     
@@ -813,6 +847,55 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         if (basBotonPlay.intersectaMouse(mseEvent.getX(), mseEvent.getY())) {
             bPlay = true;  
         }
+        if (basBotonHigh.intersectaMouse(mseEvent.getX(), mseEvent.getY())) {
+            iMenu = 2;
+        }
+        if (basBotonInst.intersectaMouse(mseEvent.getX(), mseEvent.getY())) {
+            iMenu = 3;  
+        }
+        if (basBotonMenu.intersectaMouse(mseEvent.getX(), mseEvent.getY())) {
+            iMenu = 1;  
+        }
+        
+        switch (iMenu) {
+           case 1: { //menu
+               // se posiciona el boton play
+               int iPosX = (iWIDTH / 2) - (basBotonPlay.getAncho() / 2);    
+               int iPosY = (iHEIGHT / 2) - (basBotonPlay.getAlto() / 2);
+               basBotonPlay.setX(iPosX);
+               basBotonPlay.setY(iPosY + 20);
+
+               // se posiciona el boton highscore
+               iPosX = (iWIDTH / 2) - (basBotonHigh.getAncho() / 2);    
+               iPosY = (iHEIGHT / 2) - (basBotonHigh.getAlto() / 2);
+               basBotonHigh.setX(iPosX + 250);
+               basBotonHigh.setY(iPosY + 20);
+
+               // se posiciona el boton instrucciones
+               iPosX = (iWIDTH / 2) - (basBotonInst.getAncho() / 2);    
+               iPosY = (iHEIGHT / 2) - (basBotonInst.getAlto() / 2);
+               basBotonInst.setX(iPosX - 250);
+               basBotonInst.setY(iPosY + 20);
+               break;    
+           }
+           case 2: { //highscores
+
+               break;    
+           }
+           case 3: { //instrucciones
+               // se posiciona el boton play
+               int iPosX = (iWIDTH / 2) - (basBotonPlay.getAncho() / 2);    
+               int iPosY = (iHEIGHT - 60) - (basBotonPlay.getAlto() / 2);
+               basBotonPlay.setX(iPosX);
+               basBotonPlay.setY(iPosY);
+               // se posiciona el boton menu
+               iPosX = (iWIDTH / 2) - (basBotonPlay.getAncho() / 2);    
+               iPosY = (iHEIGHT - 60) - (basBotonPlay.getAlto() / 2);
+               basBotonMenu.setX(iPosX + 300);
+               basBotonMenu.setY(iPosY);
+               break;    
+           }
+       }
     }
 
      /**

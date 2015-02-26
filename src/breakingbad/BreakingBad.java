@@ -1,7 +1,8 @@
 /**
  * TareaBreakingBad
  *
- * Juego en el que .....
+ * Juego en el que una bolita rebota con una barra que mueve el jugador, con el
+ * fin de destruir los cuadros de arriba.
  *
  * @author Mauro Amarante (A00191903) and Fabian Montemayor (A01280156)
  * @version 1.0
@@ -48,8 +49,8 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     private Image    imaImagenJFrame;   // Imagen a proyectar en JFrame
     private Graphics graGraficaJFrame;  // Objeto grafico de la Imagen
     private int iContadorBarra; // contador de la barra
-    private long lTiempoActual;
-    private long lTiempoInicial;
+    private long lTiempoActual; // tiempo actual
+    private long lTiempoInicial;    // tiempo inicial
     private int iContadorBloque;    // contador de animacion del bloque
     private int iCantidadBloques;   // cantidad de bloques destruidos
     
@@ -213,21 +214,36 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         aniPortada.sumaCuadro(portada32, 200);
         
         // se cargan las imagenes de la animacion de los bricks
-        Image imaBrick1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick1.png"));
-        Image imaBrick2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick2.png"));
-        Image imaBrick3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick3.png"));
-        Image imaBrick4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick4.png"));
-        Image imaBrick5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick5.png"));
-        Image imaBrick6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick6.png"));
-        Image imaBrick7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick7.png"));
-        Image imaBrick8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick8.png"));
-        Image imaBrick9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick9.png"));
-        Image imaBrick10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick10.png"));
-        Image imaBrick11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick11.png"));
-        Image imaBrick12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick12.png"));
-        Image imaBrick13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick13.png"));
-        Image imaBrick14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick14.png"));
-        Image imaBrick15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick15.png"));
+        Image imaBrick1 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick1.png"));
+        Image imaBrick2 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick2.png"));
+        Image imaBrick3 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick3.png"));
+        Image imaBrick4 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick4.png"));
+        Image imaBrick5 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick5.png"));
+        Image imaBrick6 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick6.png"));
+        Image imaBrick7 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick7.png"));
+        Image imaBrick8 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick8.png"));
+        Image imaBrick9 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick9.png"));
+        Image imaBrick10 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick10.png"));
+        Image imaBrick11 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick11.png"));
+        Image imaBrick12 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick12.png"));
+        Image imaBrick13 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick13.png"));
+        Image imaBrick14 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick14.png"));
+        Image imaBrick15 = Toolkit.getDefaultToolkit().
+                getImage(this.getClass().getResource("imagenes/fotobrick15.png"));
 
         // crea la animacion del brick
         Animacion aniBrick = new Animacion();
@@ -254,6 +270,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         int iPosX = 5;
         int iPosY = 35;
         
+        // se posicionan y agregan a la lista cada uno de los cuadros
         for (int iI = 1; iI <= 27; iI++) {
             Base basDroga = new Base(iPosX, iPosY, 
                     imaBrick1, aniBrick);
@@ -370,13 +387,13 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
              aniPortada.actualiza(lTiempoTranscurrido);
          }
          
-         
+         // si ya empezó el juego
          if (bPlay) {
             // checa el nivel
             if (iCantidadBloques == 27) {
                 iNivel++;
-                // dibuja todos los bloques otra vez
                 iCantidadBloques = 0;
+                // dibuja todos los bloques otra vez en sus posiciones originales             
                 int iPosX = 5;
                 int iPosY = 35;
                 int iI = 0;
@@ -390,11 +407,13 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                     }
                     iI++;
                 }
+                
                 // se reposiciona la bolita
                 basBola.setX(iWIDTH / 2);
                 basBola.setY(580);
                 iBallXSpeed = 5;
                 iBallYSpeed = 5;
+                
                 // se reposiciona la barra
                 basBarra.setX(iWIDTH / 2 - 75);
                 basBarra.setY(600);
@@ -404,16 +423,16 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             basBola.setX(basBola.getX() + iBallXSpeed);
             basBola.setY(basBola.getY() + iBallYSpeed);
 
-            // movimiento de la barra
+            // movimiento de la barra con un contador para que se mueva fluido
             if (bMove) {
                 if (iContadorBarra < 20) {
-                   if (iDireccion == 1) {
+                    if (iDireccion == 1) {
                        basBarra.setX(basBarra.getX() - 5);
-                   }  
-                   else if (iDireccion == 2) {
+                    }  
+                    else if (iDireccion == 2) {
                        basBarra.setX(basBarra.getX() + 5);
-                   }
-                   iContadorBarra++;
+                    }
+                    iContadorBarra++;
                 }
                 else {
                    bMove = false;
@@ -433,8 +452,6 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                         basBrick.getAnimacion().actualiza(lTiempoTranscurrido);
                         iContadorBloque++;
                     }
-                    
-                    
                 }
             }
          }
@@ -529,7 +546,8 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                                 this.getSize().height);
             graGraficaJFrame = imaImagenJFrame.getGraphics ();
         }
-
+        
+        // dibuja la portada
         if (iPortada > 0) {
             graGraficaJFrame.drawImage(aniPortada.getImagen(), 0, 0, this);
             iPortada--;
@@ -604,13 +622,14 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
       */
     public void paint1(Graphics graDibujo) {
         if (!bPlay && iPortada <= 0) {
+            // dibuja los botones
             basBotonPlay.paint(graDibujo, this);
             basBotonHigh.paint(graDibujo, this);
             basBotonInst.paint(graDibujo, this);
         }
         
         else if (basBarra != null && lklDrogas != null && 
-                                            basBola != null && bPlay){
+                                            basBola != null && bPlay) {
             // dibula los objetos
             basBola.paint(graDibujo, this);
             basBarra.paint(graDibujo, this);
@@ -726,8 +745,8 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
      * al presionar.
      * 
      */
-    public void mouseClicked(MouseEvent e) {
-       
+    public void mouseClicked(MouseEvent mseEvent) {
+       // no se utiliza
     }
 
      /**

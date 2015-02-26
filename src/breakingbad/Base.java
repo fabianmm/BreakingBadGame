@@ -4,7 +4,7 @@
  * Modela la definición de todos los objetos de tipo
  * <code>Base</code>
  *
- * @author Fabián Montemayor A01280156
+ * @author Mauro Amarante (A00191903) and Fabian Montemayor (A01280156)
  * @version 2.0 
  * @date 11/02/15
  */
@@ -204,9 +204,9 @@ public class Base {
         /**
      * setX
      * 
-     * Metodo modificador usado para cambiar la posicion en x del objeto
+     * Metodo modificador usado para cambiar la boleana de animacion
      * 
-     * @param iX es la <code>posicion en x</code> del objeto.
+     * @param bAnimar es la <code>boleana de animacion</code> del objeto.
      * 
      */
     public void setAnimar(boolean bAnimar) {
@@ -216,9 +216,9 @@ public class Base {
     /**
      * getX
      * 
-     * Metodo de acceso que regresa la posicion en x del objeto 
+     * Metodo de acceso que regresa la boleana de animacion
      * 
-     * @return iX es la <code>posicion en x</code> del objeto.
+     * @return bAnimar es la <code>boleana de animacion</code> del objeto.
      * 
      */
     public boolean isAnimar() {

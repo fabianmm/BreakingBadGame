@@ -28,6 +28,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     private static final int iWIDTH = 900;  // ancho del JFrame
     private static final int iHEIGHT = 650; // alto del JFrame
     private int iScore;     // puntos del juego
+    private int iVidas;     // vidas del juego
     private boolean bLose;  // boleana de perdida de juego
     private Base basBarra;  // barra del juego
     private Base basBola;   // bola del juego
@@ -46,10 +47,11 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     private int iPortada;  // contador de portada
     private Image    imaImagenJFrame;   // Imagen a proyectar en JFrame
     private Graphics graGraficaJFrame;  // Objeto grafico de la Imagen
-    private int iContadorBarra;
+    private int iContadorBarra; // contador de la barra
     private long lTiempoActual;
     private long lTiempoInicial;
-    private int iContadorBloque;
+    private int iContadorBloque;    // contador de animacion del bloque
+    private int iCantidadBloques;   // cantidad de bloques destruidos
     
     /** 
      * BreakingBad
@@ -65,6 +67,10 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         // inicializa score en 0
         iScore = 0;
         
+        // inicializa vidas en 3
+        iVidas = 3;
+        
+        //inicia el contador del bloque en 0
         iContadorBloque = 0;
         
         // inicializa la boleana en falso
@@ -85,6 +91,8 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         // el juego no inicia hasta presionar el boton del menu
         bPlay = false;
 
+        // inicializa la cantidad de bloques destruidos en 0
+        iCantidadBloques = 0;
         
         // se inicializa en nivel 1
         iNivel = 1;
@@ -221,7 +229,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         Image imaBrick14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick14.png"));
         Image imaBrick15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenes/fotobrick15.png"));
 
-        
+        // crea la animacion del brick
         Animacion aniBrick = new Animacion();
         aniBrick.sumaCuadro(imaBrick1, 50);
         aniBrick.sumaCuadro(imaBrick2, 50);
@@ -308,7 +316,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         th.start ();
         
         addKeyListener(this); // se escucha el teclado
-        addMouseListener(this); //se eescucha al mouse
+        addMouseListener(this); //se escucha al mouse
     }
     
     /** 
@@ -326,7 +334,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
            se checa si hubo colisiones para desaparecer jugadores o corregir
            movimientos y se vuelve a pintar todo
         */ 
-        while (true) {
+        while (iVidas > 0) {
             if (!bPause) {
                 actualiza();
                 checaColision();             
@@ -364,6 +372,34 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
          
          
          if (bPlay) {
+            // checa el nivel
+            if (iCantidadBloques == 27) {
+                iNivel++;
+                // dibuja todos los bloques otra vez
+                iCantidadBloques = 0;
+                int iPosX = 5;
+                int iPosY = 35;
+                int iI = 0;
+                for (Base basBrick : lklDrogas) {
+                    basBrick.setX(iPosX);
+                    basBrick.setY(iPosY);
+                    iPosX += 100;
+                    if (iI % 9 == 0) {
+                       iPosX = 5;
+                       iPosY += 55;
+                    }
+                    iI++;
+                }
+                // se reposiciona la bolita
+                basBola.setX(iWIDTH / 2);
+                basBola.setY(580);
+                iBallXSpeed = 5;
+                iBallYSpeed = 5;
+                // se reposiciona la barra
+                basBarra.setX(iWIDTH / 2 - 75);
+                basBarra.setY(600);
+             }
+             
             // movimiento de la bola
             basBola.setX(basBola.getX() + iBallXSpeed);
             basBola.setY(basBola.getY() + iBallYSpeed);
@@ -425,8 +461,17 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             iBallXSpeed *= -1;
         }
         if (basBola.getY() > iHEIGHT - basBola.getAlto()) {
-            // si choca abajo pierde
-            bLose = true;
+            // si choca abajo pierde vida
+            iVidas--;
+            // se reposiciona la bolita
+            basBola.setX(iWIDTH / 2);
+            basBola.setY(580);
+            iBallXSpeed = 5;
+            iBallYSpeed = 5;
+            // se reposiciona la barra
+            basBarra.setX(iWIDTH / 2 - 75);
+            basBarra.setY(600);
+            
         }
         if (basBola.getY() < 20) {
             // si choca arriba
@@ -463,7 +508,8 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                         basBola.getY() < basBrick.getY() + basBrick.getAlto()) {
                     iBallXSpeed *= -1;
                 }
-                
+                // suma 1 a cantidad de bloques
+                iCantidadBloques++;
             }
         }
         
@@ -528,12 +574,12 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                 }
                 case 2: { //2 nivel
                     urlImagenFondo = this.getClass().
-                                            getResource("imagenes/nivel2.jpeg");
+                                            getResource("imagenes/nivel2.jpg");
                     break;    
                 }
                 case 3: { //3 nivel
                     urlImagenFondo = this.getClass().
-                                            getResource("imagenes/nivel3.jpeg");
+                                            getResource("imagenes/nivel3.png");
                     break;    
                 }
             }
@@ -565,14 +611,17 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         
         else if (basBarra != null && lklDrogas != null && 
                                             basBola != null && bPlay){
+            // dibula los objetos
             basBola.paint(graDibujo, this);
             basBarra.paint(graDibujo, this);
             for (Base basBrick : lklDrogas) {
                 basBrick.paint(graDibujo, this);
             }
             
+            // dibuja vidas y score
             graDibujo.setColor(Color.white);
             graDibujo.drawString("Score: " + iScore, 800, 640);
+            graDibujo.drawString("Vidas: " + iVidas, 700, 640);
         }
         else {
             //Da un mensaje mientras se carga el dibujo	

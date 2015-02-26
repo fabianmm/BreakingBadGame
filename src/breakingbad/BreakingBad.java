@@ -56,7 +56,9 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     private int iContadorBloque;    // contador de animacion del bloque
     private int iCantidadBloques;   // cantidad de bloques destruidos
     private boolean bRestart;   // boleana para volver a empezar
-    
+    private SoundClip sndSonidoPortada; // sonido portada
+    private SoundClip sndSonidoJuego;   // sonido en el juego
+    private SoundClip sndSonidoGameOver;    // sonido gameOver
     /** 
      * BreakingBad
      * 
@@ -344,6 +346,15 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
 	basBotonMenu = new Base(0, 0,
                 	Toolkit.getDefaultToolkit().getImage(urlImagenBotonMenu));
         
+        
+        // Define los sonidos
+        sndSonidoPortada = new SoundClip("");
+        sndSonidoPortada.setLooping(true);
+        sndSonidoJuego = new SoundClip("");
+        sndSonidoJuego.setLooping(true);
+        sndSonidoGameOver = new SoundClip("");
+        sndSonidoGameOver.setLooping(true);
+        
         // Declaras un hilo
         Thread th = new Thread (this);
         // Empieza el hilo
@@ -402,10 +413,20 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
          //Actualiza la animación en base al tiempo transcurrido
          if (iPortada > 0) {
              aniPortada.actualiza(lTiempoTranscurrido);
+             sndSonidoPortada.play();
          }
          
          // si ya empezó el juego
          if (bPlay) {
+             sndSonidoPortada.stop();
+             // pone los sonidos
+             if (iVidas > 0) {
+                sndSonidoJuego.play();
+             }
+             else {
+                sndSonidoJuego.stop();
+                sndSonidoGameOver.play();
+             }
              
             if (bRestart) {
                 // reinicia todas las variables
@@ -611,7 +632,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                 }
                 case 2: { //highscores
                     urlImagenMenu = this.getClass().
-                                            getResource("imagenes/nivel2.jpeg");
+                                            getResource("imagenes/nivel2.jpg");
                     break;    
                 }
                 case 3: { //instrucciones
@@ -704,6 +725,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                 graDibujo.drawString("No se cargo la imagen..", 20, 20);
             }
         }
+       
         
         if (iVidas <= 0) {
             //definir imagen de game over

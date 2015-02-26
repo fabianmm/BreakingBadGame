@@ -222,21 +222,21 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
 
         
         Animacion aniBrick = new Animacion();
-        aniBrick.sumaCuadro(imaBrick1, 100);
-        aniBrick.sumaCuadro(imaBrick2, 100);
-        aniBrick.sumaCuadro(imaBrick3, 100);
-        aniBrick.sumaCuadro(imaBrick4, 100);
-        aniBrick.sumaCuadro(imaBrick5, 100);
-        aniBrick.sumaCuadro(imaBrick6, 100);
-        aniBrick.sumaCuadro(imaBrick7, 100);
-        aniBrick.sumaCuadro(imaBrick8, 100);
-        aniBrick.sumaCuadro(imaBrick9, 100);
-        aniBrick.sumaCuadro(imaBrick10, 100);
-        aniBrick.sumaCuadro(imaBrick11, 100);
-        aniBrick.sumaCuadro(imaBrick12, 100);
-        aniBrick.sumaCuadro(imaBrick13, 100);
-        aniBrick.sumaCuadro(imaBrick14, 100);
-        aniBrick.sumaCuadro(imaBrick15, 100);
+        aniBrick.sumaCuadro(imaBrick1, 50);
+        aniBrick.sumaCuadro(imaBrick2, 50);
+        aniBrick.sumaCuadro(imaBrick3, 50);
+        aniBrick.sumaCuadro(imaBrick4, 50);
+        aniBrick.sumaCuadro(imaBrick5, 50);
+        aniBrick.sumaCuadro(imaBrick6, 50);
+        aniBrick.sumaCuadro(imaBrick7, 50);
+        aniBrick.sumaCuadro(imaBrick8, 50);
+        aniBrick.sumaCuadro(imaBrick9, 50);
+        aniBrick.sumaCuadro(imaBrick10, 50);
+        aniBrick.sumaCuadro(imaBrick11, 50);
+        aniBrick.sumaCuadro(imaBrick12, 50);
+        aniBrick.sumaCuadro(imaBrick13, 50);
+        aniBrick.sumaCuadro(imaBrick14, 50);
+        aniBrick.sumaCuadro(imaBrick15, 50);
         
         // crea los cuadros
         lklDrogas = new LinkedList();
@@ -383,7 +383,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             // animacion de los bricks
             for (Base basBrick : lklDrogas) {
                 if (basBrick.isAnimar()) {
-                    if (iContadorBloque >= 75) {
+                    if (iContadorBloque >= 37) {
                         iContadorBloque = 0;
                         basBrick.setX(basBrick.getX() * -1);
                         basBrick.setY(basBrick.getY() * -1);

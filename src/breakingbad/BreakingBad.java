@@ -10,6 +10,7 @@
 
 package breakingbad;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -448,6 +449,9 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
                 // lo desaparece
                 basBrick.setAnimar(true);
                 
+                // aumenta 100 al score
+                iScore += 100;
+                
                 // rebota verticalmente
                 iBallYSpeed *= -1;
                 iBallXSpeed = calcBallAngle(basBrick);
@@ -563,6 +567,9 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
             for (Base basBrick : lklDrogas) {
                 basBrick.paint(graDibujo, this);
             }
+            
+            graDibujo.setColor(Color.white);
+            graDibujo.drawString("Score: " + iScore, 800, 640);
         }
         else {
             //Da un mensaje mientras se carga el dibujo	

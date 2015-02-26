@@ -53,6 +53,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     private long lTiempoInicial;    // tiempo inicial
     private int iContadorBloque;    // contador de animacion del bloque
     private int iCantidadBloques;   // cantidad de bloques destruidos
+    private boolean bRestart;   // boleana para volver a empezar
     
     /** 
      * BreakingBad
@@ -85,6 +86,9 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         
         // inicializa boleana de movimiento en falso
         bMove = false;
+        
+        // inicializa la boleana para volver a empezar en falso
+        bRestart = false;
         
         // inicializa en 450
         iPortada = 460;
@@ -389,6 +393,39 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
          
          // si ya empezó el juego
          if (bPlay) {
+             
+            if (bRestart) {
+                // reinicia todas las variables
+                iNivel = 1;
+                iCantidadBloques = 0;
+                iScore = 0;
+                iVidas = 0;
+                // dibuja todos los bloques otra vez en sus posiciones originales             
+                int iPosX = 5;
+                int iPosY = 35;
+                int iI = 1;
+                for (Base basBrick : lklDrogas) {
+                    basBrick.setX(iPosX);
+                    basBrick.setY(iPosY);
+                    iPosX += 100;
+                    if (iI % 9 == 0) {
+                       iPosX = 5;
+                       iPosY += 55;
+                    }
+                    iI++;
+                }
+                // se reposiciona la bolita
+                basBola.setX(iWIDTH / 2);
+                basBola.setY(580);
+                iBallXSpeed = 5;
+                iBallYSpeed = 5;
+                
+                // se reposiciona la barra
+                basBarra.setX(iWIDTH / 2 - 75);
+                basBarra.setY(600);
+                bRestart = false;
+            }
+            
             // checa el nivel
             if (iCantidadBloques == 27) {
                 iNivel++;
@@ -688,12 +725,10 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     public void keyReleased(KeyEvent kveEvent) {
         if (kveEvent.getKeyCode() == KeyEvent.VK_P) {
             // cambia la boleana de pausa
-            if (!bPause) {
-                bPause = true;
-            }
-            else {
-                bPause = false;
-            }
+            bPause = !bPause;
+        }
+        else if (kveEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+            bRestart = true;
         }
     }
 

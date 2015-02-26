@@ -25,6 +25,7 @@ public class Base {
     private int iAlto; //largo del objeto
     private Image imaImagen;	//imagen.
     private Animacion aniAnimacion; // animacion de la base
+    private boolean bAnimar;    // boleana de si se anima o no
 
     /**
      * Base
@@ -45,6 +46,7 @@ public class Base {
         this.iAncho = iAncho;
         this.iAlto = iAlto;
         this.imaImagen = imaImagen;
+        this.bAnimar = false;
     }
     
     /**
@@ -86,6 +88,7 @@ public class Base {
         this.iAncho = imiImagen.getIconWidth();
         this.iAlto = imiImagen.getIconHeight();
         this.aniAnimacion = aniAnimacion;
+        this.bAnimar = false;
     }
 
     
@@ -198,6 +201,29 @@ public class Base {
             return aniAnimacion;
     }
     
+        /**
+     * setX
+     * 
+     * Metodo modificador usado para cambiar la posicion en x del objeto
+     * 
+     * @param iX es la <code>posicion en x</code> del objeto.
+     * 
+     */
+    public void setAnimar(boolean bAnimar) {
+        this.bAnimar = bAnimar;
+    }
+
+    /**
+     * getX
+     * 
+     * Metodo de acceso que regresa la posicion en x del objeto 
+     * 
+     * @return iX es la <code>posicion en x</code> del objeto.
+     * 
+     */
+    public boolean isAnimar() {
+            return bAnimar;
+    }
     /**
      * paint
      * 
@@ -209,9 +235,17 @@ public class Base {
      * 
      */
     public void paint(Graphics graGrafico, ImageObserver imoObserver) {
-        graGrafico.drawImage(getImagen(), getX(), getY(), getAncho(), 
+        if (bAnimar) {
+            graGrafico.drawImage(aniAnimacion.getImagen(), getX(), getY(), getAncho(), 
                 getAlto(), imoObserver);
+        }
+        else {
+            graGrafico.drawImage(getImagen(), getX(), getY(), getAncho(), 
+                getAlto(), imoObserver);
+        }
     }
+        
+    
 
     /**
      * equals

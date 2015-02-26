@@ -48,6 +48,7 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     private int iContadorBarra;
     private long lTiempoActual;
     private long lTiempoInicial;
+    private int iContadorBloque;
     
     /** 
      * BreakingBad
@@ -62,6 +63,8 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
     public BreakingBad() {
         // inicializa score en 0
         iScore = 0;
+        
+        iContadorBloque = 0;
         
         // inicializa la boleana en falso
         bLose = false;
@@ -242,11 +245,11 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         int iPosX = 5;
         int iPosY = 35;
         
-        for (int iI = 0; iI < 20; iI++) {
+        for (int iI = 1; iI <= 27; iI++) {
             Base basDroga = new Base(iPosX, iPosY, 
                     imaBrick1, aniBrick);
-            iPosX += 105;
-            if (iI % 7 == 0) {
+            iPosX += 100;
+            if (iI % 9 == 0) {
                 iPosX = 5;
                 iPosY += 55;
             }
@@ -356,25 +359,46 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
          //Actualiza la animación en base al tiempo transcurrido
          aniPortada.actualiza(lTiempoTranscurrido);
          
-         // movimiento de la bola
-         basBola.setX(basBola.getX() + iBallXSpeed);
-         basBola.setY(basBola.getY() + iBallYSpeed);
-         
-         // movimiento de la barra
-         if (bMove) {
-             if (iContadorBarra < 20) {
-                if (iDireccion == 1) {
-                    basBarra.setX(basBarra.getX() - 3);
-                }  
-                else if (iDireccion == 2) {
-                    basBarra.setX(basBarra.getX() + 3);
+         if (bPlay) {
+            // movimiento de la bola
+            basBola.setX(basBola.getX() + iBallXSpeed);
+            basBola.setY(basBola.getY() + iBallYSpeed);
+
+            // movimiento de la barra
+            if (bMove) {
+                if (iContadorBarra < 20) {
+                   if (iDireccion == 1) {
+                       basBarra.setX(basBarra.getX() - 5);
+                   }  
+                   else if (iDireccion == 2) {
+                       basBarra.setX(basBarra.getX() + 5);
+                   }
+                   iContadorBarra++;
                 }
-                iContadorBarra++;
-             }
-             else {
-                bMove = false;
-             }
+                else {
+                   bMove = false;
+                }
+            }
+            
+            // animacion de los bricks
+            for (Base basBrick : lklDrogas) {
+                if (basBrick.isAnimar()) {
+                    if (iContadorBloque >= 75) {
+                        iContadorBloque = 0;
+                        basBrick.setX(basBrick.getX() * -1);
+                        basBrick.setY(basBrick.getY() * -1);
+                        basBrick.setAnimar(false);
+                    }
+                    else {
+                        basBrick.getAnimacion().actualiza(lTiempoTranscurrido);
+                        iContadorBloque++;
+                    }
+                    
+                    
+                }
+            }
          }
+         
          
          
          
@@ -420,7 +444,18 @@ public class BreakingBad extends JFrame implements KeyListener, MouseListener,
         // checa los bricks
         for (Base basBrick : lklDrogas) {
             if (basBrick.intersecta(basBola)) {
+                // lo desaparece
+                basBrick.setAnimar(true);
                 
+                //basBrick.setX(basBrick.getX() * -1);
+                //basBrick.setY(basBrick.getY() * -1);
+                // rebota verticalmente
+                iBallYSpeed *= -1;
+                
+                if (basBola.getY() > basBrick.getY() && 
+                        basBola.getY() < basBrick.getY() + basBrick.getAlto()) {
+                    iBallXSpeed *= -1;
+                }
             }
         }
         
